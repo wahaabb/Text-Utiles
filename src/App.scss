@@ -1,0 +1,7 @@
+@import './SCSS/bootstrap.scss';
+.body{
+    height: 100vh;
+}
+.accordion-button::after {
+    filter: invert(1);
+}

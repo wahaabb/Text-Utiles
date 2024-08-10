@@ -1,23 +1,52 @@
-import './App.css';
+import './App.scss';
+import Textform from './components/Textform.js';
+import Navbar from './components/Navbar.js';
+import Alert  from './components/Alerts.js';
+import About from './components/About.js';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
+import React, { useState } from 'react';
 function App() {
+  const [mode, setmode] = useState('light');
+  const [alert, setalert] = useState(null);
+  const showAlert = (message, type) => {
+    
+    setalert({
+      msg: message,
+      type: type})
+setTimeout(() => {
+  setalert(null)
+}, 1500)
+    
+  }
+  const handleMode = () => {
+    if (mode === 'light') {
+      setmode('dark');
+    showAlert("Dark mode has been enabled", "success");
+
+    } else {
+      setmode('light');
+      showAlert("Light mode has been enabled", "success");
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Router>
+      <Navbar title="TextUtiles" home="Home" mode={mode} changeMode={handleMode} />
+    
+      <div className={` bg-${mode} body`}>
+      <Alert alert={alert}/>
+      <Routes>
+          <Route path="/about" element={<About mode={mode} />}/>
+          <Route path="/" element={<Textform mode={mode} showAlert={showAlert} />}/>
+        </Routes>
+      </div>
+    </Router>
+    </>
   );
 }
 
